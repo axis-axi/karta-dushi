@@ -13,7 +13,7 @@ var INTRO = [
 ];
 var CLUB = "Клуб Точка опоры: обучение по подписке, девять факультетов и записанные уроки, которые можно смотреть в своём темпе. Подписка: https://tochka-opory.lpxl.ru/podpiska";
 var CHAN = "Телеграм-канал: https://t.me/nadin_matrix";
-var NOTE = "Карта души составляется один раз и на всю жизнь. Описанное могло проявиться раньше или проявится позже. Если какой-то вариант вам совсем незнаком, значит, он ещё не проигрался или давно остался в прошлом. Тёмные варианты описаны не затем, чтобы они обязательно сбылись, а чтобы вы смогли их заметить и обойти.";
+var NOTE = "Ваша карта составляется один раз и на всю жизнь. Описанное могло проявиться раньше или проявится позже. Если какой-то вариант вам совсем незнаком, значит, он ещё не проигрался или давно остался в прошлом. Тёмные варианты описаны не затем, чтобы они обязательно сбылись, а чтобы вы смогли их заметить и обойти.";
 var PALS = {
  vino:{main:"5E1A1E",acc:"A8823C",line:"C6A15B",ink:"3A2A22",mute:"7C6B5C",rule:"DCCBAA",card:"EFE3D2"},
  lilac:{main:"5E3A8C",acc:"A8823C",line:"C6A15B",ink:"2F2A38",mute:"6F6680",rule:"E3D8EE",card:"E9E0F3"},
@@ -45,7 +45,7 @@ function $(id){ return document.getElementById(id); }
 function render(){
   var nums = R.nums, h = "";
   var who = R.name ? esc(R.name) : "Ваша карта";
-  h += '<div class="card rhead"><div class="logo">Точка опоры</div><h2>' + who + '</h2><div class="sub">Карта души · ' + R.date + '</div>';
+  h += '<div class="card rhead"><div class="logo">Точка опоры</div><h2>' + who + '</h2><div class="sub">Компас души · ' + R.date + '</div>';
   h += '<div class="six">';
   for(var i = 0; i < 6; i++){
     h += '<div class="cell"><b>' + SECT[i] + '</b><div class="disc">' + nums[i] + '</div><i>' + (i === 5 ? PLANETS[nums[i]] : "число " + nums[i]) + '</i></div>';
@@ -80,7 +80,7 @@ function download(blob, name){
   document.body.appendChild(a); a.click();
   setTimeout(function(){ URL.revokeObjectURL(a.href); document.body.removeChild(a); }, 1500);
 }
-function fileBase(){ return ("Карта души" + (R.name ? " " + R.name : "") + " " + R.date).replace(/[\\\/:*?"<>|]/g, ""); }
+function fileBase(){ return ("Компас души" + (R.name ? " " + R.name : "") + " " + R.date).replace(/[\\\/:*?"<>|]/g, ""); }
 function loadScript(u){ return new Promise(function(res, rej){ var s = document.createElement("script"); s.src = u; s.onload = res; s.onerror = rej; document.head.appendChild(s); }); }
 function parts(){
   var out = [];
@@ -97,7 +97,8 @@ function exportPdf(){
       Playfair:{normal:"play-500.ttf",bold:"play-500.ttf",italics:"play-500.ttf",bolditalics:"play-500.ttf"}};
     var c = [];
     c.push({text:"ТОЧКА ОПОРЫ", fontSize:8, bold:true, color:"#" + P.acc, characterSpacing:3, alignment:"center"});
-    c.push({text:"Карта души", font:"Playfair", fontSize:30, color:"#" + P.main, alignment:"center", margin:[0,8,0,4]});
+    c.push({text:"Компас души", font:"Playfair", fontSize:30, color:"#" + P.main, alignment:"center", margin:[0,8,0,2]});
+    c.push({text:"Карта вашей души по дате рождения", fontSize:9, color:"#" + P.mute, alignment:"center", margin:[0,0,0,4]});
     c.push({text:(R.name ? R.name + " · " : "") + R.date, fontSize:10, color:"#" + P.mute, alignment:"center", margin:[0,0,0,16]});
     var head = [], row = [];
     for(var i = 0; i < 6; i++){
@@ -142,7 +143,8 @@ function exportWord(){
     var run = function(t, o){ o = o || {}; o.text = t; return new X.TextRun(o); };
     var para = function(t, o){ o = o || {}; return new X.Paragraph({children:[run(t, {font:o.font || "Calibri", size:o.size || 22, color:o.color || P.ink, italics:o.it, bold:o.bold, characterSpacing:o.sp})], spacing:{after:o.after || 140, before:o.before || 0, line:o.line || 300}, alignment:o.al, bullet:o.bullet, numbering:o.num}); };
     kids.push(para("ТОЧКА ОПОРЫ", {size:16, color:P.acc, bold:true, al:X.AlignmentType.CENTER, sp:60}));
-    kids.push(para("Карта души", {font:"Georgia", size:60, color:P.main, al:X.AlignmentType.CENTER, after:80}));
+    kids.push(para("Компас души", {font:"Georgia", size:60, color:P.main, al:X.AlignmentType.CENTER, after:40}));
+    kids.push(para("Карта вашей души по дате рождения", {size:18, color:P.mute, al:X.AlignmentType.CENTER, after:80}));
     kids.push(para((R.name ? R.name + " · " : "") + R.date, {size:20, color:P.mute, al:X.AlignmentType.CENTER, after:240}));
     var cells = [];
     for(var i = 0; i < 6; i++){
