@@ -11,6 +11,8 @@ var INTRO = [
  "Мы подходим к главному. Сектор пути показывает, какие шаги ведут к результату, через что вам благоприятно реализовываться и что мешает осуществить мечты. Здесь разбирается программа всей жизни, поэтому что-то может показаться не про вас: этот вариант либо ещё не проявился, либо остался в прошлом.",
  "Заключительный сектор. У каждой планеты есть число и своя программа. Здесь видно, какая планета влияет на ваш сценарий, какими качествами наделяет и что предлагает."
 ];
+var CLUB = "Клуб Точка опоры: обучение по подписке, девять факультетов и записанные уроки, которые можно смотреть в своём темпе. Подписка: https://tochka-opory.lpxl.ru/podpiska";
+var CHAN = "Телеграм-канал: https://t.me/nadin_matrix";
 var NOTE = "Карта души составляется один раз и на всю жизнь. Описанное могло проявиться раньше или проявится позже. Если какой-то вариант вам совсем незнаком, значит, он ещё не проигрался или давно остался в прошлом. Тёмные варианты описаны не затем, чтобы они обязательно сбылись, а чтобы вы смогли их заметить и обойти.";
 var PALS = {
  vino:{main:"5E1A1E",acc:"A8823C",line:"C6A15B",ink:"3A2A22",mute:"7C6B5C",rule:"DCCBAA",card:"EFE3D2"},
@@ -121,6 +123,11 @@ function exportPdf(){
     c.push({text:m.intro, fontSize:10, lineHeight:1.5, margin:[0,0,0,4]});
     c.push({ol:m.steps, fontSize:10, lineHeight:1.5, margin:[0,0,0,4]});
     m.tail.forEach(function(t){ c.push({text:t, fontSize:10, lineHeight:1.5}); });
+    c.push({text:"КЛУБ И КАНАЛ", fontSize:7.5, bold:true, color:"#" + P.acc, characterSpacing:1.6, margin:[0,22,0,3]});
+    c.push({text:"Клуб Точка опоры", font:"Playfair", fontSize:16, color:"#" + P.main, margin:[0,0,0,4]});
+    c.push({text:"Обучение по подписке: девять факультетов и записанные уроки, которые можно смотреть в своём темпе.", fontSize:10, lineHeight:1.5, margin:[0,0,0,4]});
+    c.push({text:"Подписка: tochka-opory.lpxl.ru/podpiska", link:"https://tochka-opory.lpxl.ru/podpiska", fontSize:10, color:"#" + P.main, decoration:"underline", margin:[0,0,0,2]});
+    c.push({text:"Телеграм-канал: t.me/nadin_matrix", link:"https://t.me/nadin_matrix", fontSize:10, color:"#" + P.main, decoration:"underline"});
     var def = {pageSize:"A4", pageMargins:[40,44,40,48], content:c, defaultStyle:{font:"Montserrat", fontSize:10, color:"#" + P.ink},
       footer:function(cur, tot){ return {text:"Точка опоры · " + cur + " / " + tot, alignment:"center", fontSize:7, color:"#" + P.acc, characterSpacing:1.5, margin:[0,14,0,0]}; }};
     return new Promise(function(res, rej){ try{ window.pdfMake.createPdf(def).getBlob(function(b){ download(b, fileBase() + ".pdf"); res(); }); }catch(e){ rej(e); } });
@@ -159,6 +166,11 @@ function exportWord(){
     kids.push(para(m.intro));
     m.steps.forEach(function(s, i){ kids.push(para((i + 1) + ". " + s, {after:80})); });
     m.tail.forEach(function(t){ kids.push(para(t)); });
+    kids.push(para("КЛУБ И КАНАЛ", {size:15, color:P.acc, bold:true, sp:40, before:400, after:60}));
+    kids.push(para("Клуб Точка опоры", {font:"Georgia", size:32, color:P.main, after:100}));
+    kids.push(para("Обучение по подписке: девять факультетов и записанные уроки, которые можно смотреть в своём темпе."));
+    kids.push(para("Подписка: https://tochka-opory.lpxl.ru/podpiska", {after:60}));
+    kids.push(para("Телеграм-канал: https://t.me/nadin_matrix"));
     var doc = new X.Document({sections:[{properties:{page:{margin:{top:1000, bottom:1000, left:1100, right:1100}}}, children:kids}]});
     return X.Packer.toBlob(doc);
   }).then(function(b){ download(b, fileBase() + ".docx"); });
